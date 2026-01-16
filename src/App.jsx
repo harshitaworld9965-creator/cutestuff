@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import bgImage from "./assets/bg.jpg"
 
-// Compliment Machine Component with solid border
+// Compliment Machine Component - Updated with no title and subtle animation
 function ComplimentMachine() {
   const [compliment, setCompliment] = useState("Click for something nice! 🌸")
   const [isSparkling, setIsSparkling] = useState(false)
@@ -96,7 +96,7 @@ function ComplimentMachine() {
         ))}
       </div>
 
-      {/* Sparkle animation */}
+      {/* Sparkle animation - more subtle wiggle */}
       <style>
         {`
           @keyframes sparkle {
@@ -104,37 +104,17 @@ function ComplimentMachine() {
             50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
             100% { transform: scale(1) rotate(360deg); opacity: 0; }
           }
-          @keyframes wiggle {
+          @keyframes subtleWiggle {
             0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
+            25% { transform: rotate(-1deg); }
+            75% { transform: rotate(1deg); }
           }
           @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-3px); }
           }
         `}
       </style>
-
-      <div
-        style={{
-          position: "absolute",
-          top: "-16px",
-          left: "24px",
-          backgroundColor: "#FFF7F4",
-          padding: "6px 16px",
-          color: "#FF6B93",
-          fontSize: "16px",
-          fontWeight: "bold",
-          fontFamily: "'Comic Neue', cursive",
-          borderRadius: "12px",
-          border: "2px solid #FF6B93",
-          zIndex: 2,
-          boxShadow: "0 4px 12px rgba(255, 107, 147, 0.2)",
-        }}
-      >
-        Compliment Machine v2 ✨
-      </div>
 
       <div
         style={{
@@ -160,7 +140,7 @@ function ComplimentMachine() {
             border: "2px solid #FFE8E1",
             width: "100%",
             transition: "all 0.3s ease",
-            animation: isSparkling ? "none" : "wiggle 2s ease-in-out infinite",
+            animation: isSparkling ? "none" : "subtleWiggle 4s ease-in-out infinite", // Changed to more subtle
             boxShadow: "inset 0 2px 8px rgba(255, 107, 147, 0.1)",
           }}
         >
@@ -200,7 +180,7 @@ function ComplimentMachine() {
           <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             Compliment me! 
             <span style={{ 
-              animation: "wiggle 1s ease-in-out infinite",
+              animation: "subtleWiggle 2s ease-in-out infinite", // More subtle
               display: "inline-block"
             }}>
               🎀
