@@ -1,5 +1,6 @@
 import { useState } from "react"
 import About from "./components/About"
+import Shop from "./components/Shop"
 import bgImage from "./assets/bg.jpg"
 
 // Compliment Machine Component - Updated with no title and subtle animation
@@ -282,6 +283,7 @@ function App() {
     { id: "home", label: "home", emoji: "🏠" },
     { id: "about", label: "about", emoji: "👾" },
     { id: "apps", label: "apps", emoji: "🦄" },
+    { id: "shop", label: "shop", emoji: "🛍️" },
     { id: "weird", label: "weird", emoji: "✨" },
   ]
 
@@ -858,6 +860,10 @@ function App() {
 
             {section === "about" && (
               <About mode={aboutMode} toggleMode={toggleAboutMode} isMobile={isMobile} />
+            )}
+
+            {section === "shop" && (
+              <Shop isMobile={isMobile} />
             )}
 
             {section === "weird" && (
