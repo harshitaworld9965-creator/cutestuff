@@ -1,8 +1,25 @@
 // About.jsx
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
-const About = ({ mode, toggleMode }) => {
+const About = ({ mode, toggleMode, isMobile = false }) => {
   const [activeSection, setActiveSection] = useState(null)
+  const [reactions, setReactions] = useState({})
+  
+  // Initialize reactions
+  useEffect(() => {
+    const initialReactions = {}
+    sections.forEach(section => {
+      initialReactions[section.id] = 0
+    })
+    setReactions(initialReactions)
+  }, [])
+
+  const handleReaction = (sectionId) => {
+    setReactions(prev => ({
+      ...prev,
+      [sectionId]: (prev[sectionId] || 0) + 1
+    }))
+  }
   
   const sections = [
     {
@@ -13,7 +30,7 @@ const About = ({ mode, toggleMode }) => {
       borderColor: "#90CAF9",
       serious: {
         question: "What's your engineering background?",
-        answer: "I completed a degree in Mathematics and Engineering, focusing on software development, system architecture and machine learning. It gave me a strong foundation in logical thinking and problem-solving."
+        answer: "I completed a degree in Computer Science Engineering, focusing on software development and system architecture. It gave me a strong foundation in logical thinking and problem-solving."
       },
       silly: {
         question: "So you can fix printers, right?",
@@ -28,11 +45,11 @@ const About = ({ mode, toggleMode }) => {
       borderColor: "#CE93D8",
       serious: {
         question: "Why transition from engineering to law?",
-        answer: "I became fascinated with intellectual property law and how it intersects with technology. Understanding legal frameworks helps create better digital products. Also I am super into Criminal law. No it shouldn't scare you, wink wink."
+        answer: "I became fascinated with intellectual property law and how it intersects with technology. Understanding legal frameworks helps create better digital products."
       },
       silly: {
         question: "Lawyer by day, coder by night?",
-        answer: "More like 'argues with CSS by day, writes legal docs by night' while drinking excessive amounts of coffee! ☕⚖️💻"
+        answer: "More like 'argues with CSS by day, writes legal docs by night' while drinking excessive amounts of tea! ☕⚖️💻"
       }
     },
     {
@@ -128,7 +145,81 @@ const About = ({ mode, toggleMode }) => {
   ]
 
   return (
-    <div style={{ padding: "20px 0" }}>
+    <div style={{ padding: isMobile ? "10px 0" : "20px 0" }}>
+      {/* Responsive styles */}
+      <style>
+        {`
+          @media (max-width: 768px) {
+            .about-section {
+              padding: 20px !important;
+              margin-bottom: 16px !important;
+            }
+            
+            .about-title {
+              font-size: 20px !important;
+              margin-bottom: 8px !important;
+            }
+            
+            .about-question {
+              font-size: 16px !important;
+              margin-bottom: 8px !important;
+            }
+            
+            .about-answer {
+              font-size: 14px !important;
+              padding: 12px !important;
+            }
+            
+            .nav-buttons {
+              gap: 8px !important;
+              margin-bottom: 24px !important;
+            }
+            
+            .nav-button {
+              padding: 6px 12px !important;
+              font-size: 12px !important;
+            }
+            
+            .icon-circle {
+              width: 50px !important;
+              height: 50px !important;
+              font-size: 24px !important;
+            }
+            
+            .stats-footer {
+              padding: 16px !important;
+              margin-top: 24px !important;
+            }
+            
+            .stats-number {
+              font-size: 24px !important;
+            }
+            
+            .stats-label {
+              font-size: 12px !important;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            .nav-buttons {
+              flex-direction: column !important;
+              align-items: stretch !important;
+            }
+            
+            .nav-button {
+              width: 100% !important;
+              justify-content: center !important;
+            }
+            
+            .section-header {
+              flex-direction: column !important;
+              align-items: flex-start !important;
+              gap: 12px !important;
+            }
+          }
+        `}
+      </style>
+
       {/* Mode Toggle */}
       <div
         style={{
@@ -136,12 +227,13 @@ const About = ({ mode, toggleMode }) => {
           justifyContent: "center",
           alignItems: "center",
           gap: "16px",
-          marginBottom: "40px",
+          marginBottom: isMobile ? "24px" : "40px",
+          flexWrap: "wrap",
         }}
       >
         <div
           style={{
-            fontSize: "14px",
+            fontSize: isMobile ? "13px" : "14px",
             color: mode === "serious" ? "#666" : "#FF6B93",
             fontWeight: mode === "serious" ? "bold" : "normal",
             transition: "all 0.3s ease",
@@ -153,8 +245,8 @@ const About = ({ mode, toggleMode }) => {
         <button
           onClick={toggleMode}
           style={{
-            width: "60px",
-            height: "30px",
+            width: isMobile ? "50px" : "60px",
+            height: isMobile ? "25px" : "30px",
             backgroundColor: mode === "serious" ? "#90CAF9" : "#FF6B93",
             border: "none",
             borderRadius: "15px",
@@ -168,16 +260,16 @@ const About = ({ mode, toggleMode }) => {
             style={{
               position: "absolute",
               top: "2px",
-              left: mode === "serious" ? "4px" : "34px",
-              width: "26px",
-              height: "26px",
+              left: mode === "serious" ? "4px" : isMobile ? "26px" : "34px",
+              width: isMobile ? "21px" : "26px",
+              height: isMobile ? "21px" : "26px",
               backgroundColor: "white",
               borderRadius: "50%",
               transition: "all 0.3s ease",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "14px",
+              fontSize: isMobile ? "12px" : "14px",
             }}
           >
             {mode === "serious" ? "⚖️" : "✨"}
@@ -186,7 +278,7 @@ const About = ({ mode, toggleMode }) => {
         
         <div
           style={{
-            fontSize: "14px",
+            fontSize: isMobile ? "13px" : "14px",
             color: mode === "silly" ? "#FF6B93" : "#666",
             fontWeight: mode === "silly" ? "bold" : "normal",
             transition: "all 0.3s ease",
@@ -198,18 +290,20 @@ const About = ({ mode, toggleMode }) => {
 
       {/* Section Navigation */}
       <div
+        className="nav-buttons"
         style={{
           display: "flex",
           flexWrap: "wrap",
           gap: "12px",
           justifyContent: "center",
-          marginBottom: "40px",
-          padding: "0 20px",
+          marginBottom: isMobile ? "24px" : "40px",
+          padding: isMobile ? "0 10px" : "0 20px",
         }}
       >
         {sections.map((section) => (
           <button
             key={section.id}
+            className="nav-button"
             onClick={() => {
               const element = document.getElementById(section.id)
               element?.scrollIntoView({ behavior: "smooth", block: "start" })
@@ -222,32 +316,36 @@ const About = ({ mode, toggleMode }) => {
               border: `2px solid ${activeSection === section.id ? "#FF6B93" : section.borderColor}`,
               borderRadius: "25px",
               cursor: "pointer",
-              fontSize: "14px",
+              fontSize: isMobile ? "13px" : "14px",
               fontFamily: "'Comic Neue', cursive",
               display: "flex",
               alignItems: "center",
               gap: "8px",
               transition: "all 0.3s ease",
               transform: activeSection === section.id ? "scale(1.05)" : "scale(1)",
+              flex: isMobile ? "1 1 auto" : "0 1 auto",
+              minWidth: isMobile ? "120px" : "auto",
+              justifyContent: "center",
             }}
           >
             <span>{section.icon}</span>
-            <span>{section.title}</span>
+            <span>{isMobile ? section.title.split(" ")[0] : section.title}</span>
           </button>
         ))}
       </div>
 
       {/* Sections */}
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "800px", margin: "0 auto", padding: isMobile ? "0 10px" : "0" }}>
         {sections.map((section) => (
           <div
             key={section.id}
             id={section.id}
+            className="about-section"
             style={{
               backgroundColor: section.color,
               borderRadius: "20px",
-              padding: "28px",
-              marginBottom: "24px",
+              padding: isMobile ? "20px" : "28px",
+              marginBottom: isMobile ? "16px" : "24px",
               border: `3px solid ${section.borderColor}`,
               transition: "all 0.3s ease",
               cursor: "pointer",
@@ -255,66 +353,76 @@ const About = ({ mode, toggleMode }) => {
             }}
             onClick={() => setActiveSection(activeSection === section.id ? null : section.id)}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-5px)"
-              e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.1)"
+              if (!isMobile) {
+                e.currentTarget.style.transform = "translateY(-5px)"
+                e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.1)"
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)"
-              e.currentTarget.style.boxShadow = "none"
+              if (!isMobile) {
+                e.currentTarget.style.transform = "translateY(0)"
+                e.currentTarget.style.boxShadow = "none"
+              }
             }}
           >
             <div
+              className="section-header"
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "16px",
-                marginBottom: "16px",
+                gap: isMobile ? "12px" : "16px",
+                marginBottom: isMobile ? "12px" : "16px",
               }}
             >
               <div
+                className="icon-circle"
                 style={{
-                  fontSize: "32px",
+                  fontSize: isMobile ? "24px" : "32px",
                   backgroundColor: "white",
-                  width: "60px",
-                  height: "60px",
+                  width: isMobile ? "50px" : "60px",
+                  height: isMobile ? "50px" : "60px",
                   borderRadius: "50%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   border: `2px solid ${section.borderColor}`,
+                  flexShrink: 0,
                 }}
               >
                 {section.icon}
               </div>
-              <div>
+              <div style={{ flex: 1 }}>
                 <h3
+                  className="about-title"
                   style={{
-                    fontSize: "24px",
+                    fontSize: isMobile ? "20px" : "24px",
                     color: "#555",
                     margin: 0,
                     fontFamily: "'Comic Neue', cursive",
+                    lineHeight: 1.2,
                   }}
                 >
                   {section.title}
                 </h3>
                 <div
                   style={{
-                    fontSize: "14px",
+                    fontSize: isMobile ? "12px" : "14px",
                     color: "#888",
                     marginTop: "4px",
                   }}
                 >
-                  Click to {activeSection === section.id ? "collapse" : "expand"}
+                  {isMobile ? "Tap" : "Click"} to {activeSection === section.id ? "collapse" : "expand"}
                 </div>
               </div>
             </div>
 
             <div
+              className="about-question"
               style={{
-                fontSize: "18px",
+                fontSize: isMobile ? "16px" : "18px",
                 color: "#444",
                 lineHeight: "1.6",
-                marginBottom: "12px",
+                marginBottom: isMobile ? "8px" : "12px",
                 fontFamily: "'Comic Neue', cursive",
                 fontWeight: "500",
               }}
@@ -323,11 +431,12 @@ const About = ({ mode, toggleMode }) => {
             </div>
 
             <div
+              className="about-answer"
               style={{
-                fontSize: "16px",
+                fontSize: isMobile ? "14px" : "16px",
                 color: "#666",
                 lineHeight: "1.7",
-                padding: "16px",
+                padding: isMobile ? "12px" : "16px",
                 backgroundColor: "rgba(255, 255, 255, 0.7)",
                 borderRadius: "12px",
                 border: "1px solid rgba(255, 255, 255, 0.9)",
@@ -340,31 +449,43 @@ const About = ({ mode, toggleMode }) => {
             <div
               style={{
                 display: "flex",
-                gap: "12px",
-                marginTop: "20px",
-                paddingTop: "16px",
+                gap: "8px",
+                marginTop: isMobile ? "16px" : "20px",
+                paddingTop: isMobile ? "12px" : "16px",
                 borderTop: "1px dashed rgba(0,0,0,0.1)",
+                flexWrap: "wrap",
               }}
             >
+              <div style={{ fontSize: isMobile ? "12px" : "14px", color: "#888", marginRight: "8px" }}>
+                {reactions[section.id] || 0} reactions
+              </div>
               {["👍", "❤️", "😂", "😮", "🎯"].map((emoji) => (
                 <button
                   key={emoji}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleReaction(section.id)
+                  }}
                   style={{
-                    fontSize: "20px",
+                    fontSize: isMobile ? "18px" : "20px",
                     background: "none",
                     border: "none",
                     cursor: "pointer",
-                    padding: "8px",
+                    padding: "6px",
                     borderRadius: "50%",
                     transition: "all 0.2s ease",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "scale(1.3)"
-                    e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.5)"
+                    if (!isMobile) {
+                      e.currentTarget.style.transform = "scale(1.3)"
+                      e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.5)"
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "scale(1)"
-                    e.currentTarget.style.backgroundColor = "transparent"
+                    if (!isMobile) {
+                      e.currentTarget.style.transform = "scale(1)"
+                      e.currentTarget.style.backgroundColor = "transparent"
+                    }
                   }}
                 >
                   {emoji}
@@ -377,20 +498,21 @@ const About = ({ mode, toggleMode }) => {
 
       {/* Stats Footer */}
       <div
+        className="stats-footer"
         style={{
           backgroundColor: "#FFF0EB",
           borderRadius: "20px",
-          padding: "24px",
-          marginTop: "40px",
+          padding: isMobile ? "16px" : "24px",
+          marginTop: isMobile ? "24px" : "40px",
           border: "2px solid #FFD1DC",
           textAlign: "center",
         }}
       >
         <div
           style={{
-            fontSize: "20px",
+            fontSize: isMobile ? "18px" : "20px",
             color: "#FF6B93",
-            marginBottom: "16px",
+            marginBottom: isMobile ? "12px" : "16px",
             fontFamily: "'Comic Neue', cursive",
             fontWeight: "bold",
           }}
@@ -401,31 +523,31 @@ const About = ({ mode, toggleMode }) => {
           style={{
             display: "flex",
             justifyContent: "center",
-            gap: "32px",
+            gap: isMobile ? "20px" : "32px",
             flexWrap: "wrap",
           }}
         >
           <div>
-            <div style={{ fontSize: "32px", color: "#FF6B93" }}>
+            <div className="stats-number" style={{ fontSize: isMobile ? "24px" : "32px", color: "#FF6B93" }}>
               {mode === "serious" ? "2" : "∞"}
             </div>
-            <div style={{ fontSize: "14px", color: "#777" }}>
+            <div className="stats-label" style={{ fontSize: isMobile ? "12px" : "14px", color: "#777" }}>
               {mode === "serious" ? "Degrees" : "Sparkles Added"}
             </div>
           </div>
           <div>
-            <div style={{ fontSize: "32px", color: "#FF6B93" }}>
+            <div className="stats-number" style={{ fontSize: isMobile ? "24px" : "32px", color: "#FF6B93" }}>
               {mode === "serious" ? "50+" : "1000+"}
             </div>
-            <div style={{ fontSize: "14px", color: "#777" }}>
+            <div className="stats-label" style={{ fontSize: isMobile ? "12px" : "14px", color: "#777" }}>
               {mode === "serious" ? "Projects" : "Cups of Tea"}
             </div>
           </div>
           <div>
-            <div style={{ fontSize: "32px", color: "#FF6B93" }}>
+            <div className="stats-number" style={{ fontSize: isMobile ? "24px" : "32px", color: "#FF6B93" }}>
               {mode === "serious" ? "100%" : "MAX"}
             </div>
-            <div style={{ fontSize: "14px", color: "#777" }}>
+            <div className="stats-label" style={{ fontSize: isMobile ? "12px" : "14px", color: "#777" }}>
               {mode === "serious" ? "Dedication" : "Cuteness Level"}
             </div>
           </div>
