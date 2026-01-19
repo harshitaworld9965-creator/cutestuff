@@ -56,8 +56,9 @@ function ComplimentMachine() {
       style={{
         backgroundColor: "#FFF0EB",
         borderRadius: "24px",
-        padding: "28px",
-        marginTop: "36px",
+        padding: "clamp(20px, 4vw, 28px)",
+        marginTop: "clamp(24px, 4vw, 36px)",
+        width: "100%",
         maxWidth: "540px",
         border: "3px solid #FF6B93",
         position: "relative",
@@ -114,6 +115,33 @@ function ComplimentMachine() {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-3px); }
           }
+          
+          /* Mobile-specific styles for compliment machine */
+          @media (max-width: 768px) {
+            .compliment-text {
+              font-size: clamp(16px, 4vw, 18px) !important;
+              min-height: 60px !important;
+              padding: 8px !important;
+            }
+            
+            .compliment-button {
+              padding: 12px 24px !important;
+              font-size: 16px !important;
+              min-width: 160px !important;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            .compliment-text {
+              font-size: 15px !important;
+            }
+            
+            .compliment-button {
+              padding: 10px 20px !important;
+              font-size: 15px !important;
+              min-width: 140px !important;
+            }
+          }
         `}
       </style>
 
@@ -122,26 +150,27 @@ function ComplimentMachine() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "24px",
+          gap: "clamp(16px, 3vw, 24px)",
         }}
       >
         <div
+          className="compliment-text"
           style={{
-            fontSize: "20px",
+            fontSize: "clamp(16px, 4vw, 20px)",
             color: "#555",
             textAlign: "center",
             lineHeight: "1.6",
-            minHeight: "80px",
+            minHeight: "clamp(60px, 10vw, 80px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: "12px",
+            padding: "clamp(8px, 2vw, 12px)",
             backgroundColor: "rgba(255, 255, 255, 0.7)",
             borderRadius: "16px",
             border: "2px solid #FFE8E1",
             width: "100%",
             transition: "all 0.3s ease",
-            animation: isSparkling ? "none" : "subtleWiggle 4s ease-in-out infinite", // Changed to more subtle
+            animation: isSparkling ? "none" : "subtleWiggle 4s ease-in-out infinite",
             boxShadow: "inset 0 2px 8px rgba(255, 107, 147, 0.1)",
           }}
         >
@@ -149,6 +178,7 @@ function ComplimentMachine() {
         </div>
 
         <button
+          className="compliment-button"
           onClick={handleCompliment}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = "scale(1.05)"
@@ -164,9 +194,9 @@ function ComplimentMachine() {
             backgroundColor: "#FF6B93",
             color: "white",
             border: "3px solid #FF6B93",
-            padding: "16px 32px",
+            padding: "clamp(12px, 3vw, 16px) clamp(24px, 5vw, 32px)",
             borderRadius: "50px",
-            fontSize: "18px",
+            fontSize: "clamp(16px, 3vw, 18px)",
             fontWeight: "bold",
             cursor: "pointer",
             fontFamily: "'Comic Neue', cursive",
@@ -174,14 +204,14 @@ function ComplimentMachine() {
             boxShadow: "0 6px 20px rgba(255, 107, 147, 0.2)",
             position: "relative",
             overflow: "hidden",
-            minWidth: "200px",
+            minWidth: "clamp(160px, 40vw, 200px)",
             animation: "float 3s ease-in-out infinite",
           }}
         >
           <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             Compliment me! 
             <span style={{ 
-              animation: "subtleWiggle 2s ease-in-out infinite", // More subtle
+              animation: "subtleWiggle 2s ease-in-out infinite",
               display: "inline-block"
             }}>
               🎀
@@ -212,12 +242,14 @@ function ComplimentMachine() {
             alignItems: "center",
             gap: "12px",
             color: "#888",
-            fontSize: "14px",
+            fontSize: "clamp(12px, 2vw, 14px)",
             marginTop: "8px",
+            flexWrap: "wrap",
+            justifyContent: "center",
           }}
         >
           <span>Click for unlimited cute!</span>
-          <span style={{ fontSize: "18px", animation: "float 2s ease-in-out infinite" }}>💝</span>
+          <span style={{ fontSize: "clamp(16px, 3vw, 18px)", animation: "float 2s ease-in-out infinite" }}>💝</span>
         </div>
       </div>
     </div>
@@ -228,6 +260,19 @@ function App() {
   const [section, setSection] = useState("home")
   const [hovered, setHovered] = useState(null)
   const [aboutMode, setAboutMode] = useState("silly")
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check for mobile on mount and resize
+  useState(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const toggleAboutMode = () => {
     setAboutMode(aboutMode === "serious" ? "silly" : "serious")
@@ -251,7 +296,7 @@ function App() {
         justifyContent: "center",
         alignItems: "center",
         fontFamily: "'Comic Neue', 'Patrick Hand', cursive, sans-serif",
-        padding: "20px",
+        padding: "clamp(10px, 3vw, 20px)",
         position: "relative",
         overflow: "hidden",
       }}
@@ -260,6 +305,143 @@ function App() {
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Patrick+Hand&display=swap');
+          
+          /* Responsive styles */
+          @media (max-width: 768px) {
+            .main-container {
+              flex-direction: column !important;
+              height: auto !important;
+              min-height: auto !important;
+              max-height: 90vh !important;
+            }
+            
+            .sidebar {
+              width: 100% !important;
+              min-width: 100% !important;
+              flex-direction: row !important;
+              padding-top: 16px !important;
+              padding-bottom: 16px !important;
+              border-right: none !important;
+              border-bottom: 2px solid #FFD1DC !important;
+              gap: 12px !important;
+              height: auto !important;
+            }
+            
+            .nav {
+              flex-direction: row !important;
+              width: auto !important;
+              gap: 20px !important;
+            }
+            
+            .nav-button {
+              padding: 8px 12px !important;
+            }
+            
+            .main-content {
+              padding: clamp(20px, 4vw, 30px) !important;
+              height: auto !important;
+              overflow-y: auto !important;
+            }
+            
+            .heart-placeholder {
+              position: relative !important;
+              top: 0 !important;
+              right: 0 !important;
+              width: 150px !important;
+              height: 150px !important;
+              margin: 20px auto !important;
+            }
+            
+            .stats-container {
+              flex-direction: column !important;
+              align-items: center !important;
+            }
+            
+            .stat-box {
+              width: 100% !important;
+              max-width: 200px !important;
+              margin-bottom: 12px !important;
+            }
+            
+            .vertical-text {
+              writing-mode: horizontal-tb !important;
+              transform: none !important;
+              margin: 0 !important;
+              padding: 8px !important;
+              font-size: 12px !important;
+            }
+            
+            .fun-fact-title {
+              font-size: 12px !important;
+              padding: 3px 8px !important;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            .sidebar {
+              padding: 12px !important;
+              gap: 8px !important;
+            }
+            
+            .nav {
+              gap: 12px !important;
+            }
+            
+            .nav-button {
+              padding: 6px 10px !important;
+              font-size: 16px !important;
+            }
+            
+            .nav-label {
+              font-size: 10px !important;
+            }
+            
+            .main-content {
+              padding: 16px !important;
+            }
+            
+            .main-title {
+              font-size: 28px !important;
+              margin-bottom: 12px !important;
+            }
+            
+            .main-text {
+              font-size: 16px !important;
+              margin-bottom: 20px !important;
+            }
+            
+            .fun-fact-box {
+              padding: 16px !important;
+            }
+          }
+          
+          /* Tablet styles */
+          @media (min-width: 769px) and (max-width: 1024px) {
+            .main-container {
+              max-width: 95% !important;
+              height: 90vh !important;
+            }
+            
+            .sidebar {
+              width: 80px !important;
+              min-width: 80px !important;
+            }
+            
+            .main-content {
+              padding: 30px !important;
+            }
+          }
+          
+          /* Hide scrollbar for Chrome, Safari and Opera */
+          .main-content::-webkit-scrollbar {
+            display: none;
+          }
+          
+          /* Hide scrollbar for IE, Edge and Firefox */
+          .main-content {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+          }
         `}
       </style>
 
@@ -277,11 +459,12 @@ function App() {
       />
 
       <div
+        className="main-container"
         style={{
           width: "100%",
           maxWidth: "900px",
-          height: "85vh",
-          minHeight: "650px",
+          height: isMobile ? "auto" : "85vh",
+          minHeight: isMobile ? "auto" : "650px",
           backgroundColor: "#FFF7F4",
           borderRadius: "30px",
           display: "flex",
@@ -289,51 +472,62 @@ function App() {
           boxShadow: "0 20px 60px rgba(255, 150, 150, 0.2)",
           border: "2px solid #FFE8E1",
           position: "relative",
+          flexDirection: isMobile ? "column" : "row",
         }}
       >
         {/* sidebar */}
         <div
+          className="sidebar"
           style={{
             width: "100px",
             minWidth: "80px",
             backgroundColor: "#FFE8E1",
             display: "flex",
-            flexDirection: "column",
+            flexDirection: isMobile ? "row" : "column",
             alignItems: "center",
-            paddingTop: "32px",
+            justifyContent: isMobile ? "space-around" : "flex-start",
+            paddingTop: isMobile ? "16px" : "32px",
+            paddingBottom: isMobile ? "16px" : "0",
             fontSize: "14px",
             color: "#555",
             gap: "20px",
-            borderRight: "2px solid #FFD1DC",
+            borderRight: isMobile ? "none" : "2px solid #FFD1DC",
+            borderBottom: isMobile ? "2px solid #FFD1DC" : "none",
             position: "relative",
             zIndex: 2,
+            height: isMobile ? "auto" : "auto",
           }}
         >
-          <div
-            style={{
-              fontWeight: "bold",
-              fontSize: "20px",
-              color: "#FF6B93",
-              marginBottom: "10px",
-              fontFamily: "'Comic Neue', cursive",
-              transform: "rotate(-2deg)",
-            }}
-          >
-            hi ✨
-          </div>
+          {!isMobile && (
+            <div
+              style={{
+                fontWeight: "bold",
+                fontSize: "20px",
+                color: "#FF6B93",
+                marginBottom: "10px",
+                fontFamily: "'Comic Neue', cursive",
+                transform: "rotate(-2deg)",
+              }}
+            >
+              hi ✨
+            </div>
+          )}
 
           <nav
+            className="nav"
             style={{
               display: "flex",
-              flexDirection: "column",
+              flexDirection: isMobile ? "row" : "column",
               alignItems: "center",
               gap: "20px",
-              width: "100%",
+              width: isMobile ? "auto" : "100%",
+              justifyContent: isMobile ? "space-around" : "flex-start",
             }}
           >
             {navItems.map((item) => (
               <button
                 key={item.id}
+                className="nav-button"
                 onClick={() => setSection(item.id)}
                 onMouseEnter={() => setHovered(item.id)}
                 onMouseLeave={() => setHovered(null)}
@@ -346,7 +540,7 @@ function App() {
                   transform: hovered === item.id ? "scale(1.1)" : "scale(1)",
                   opacity: section === item.id ? 1 : 0.6,
                   position: "relative",
-                  width: "100%",
+                  width: isMobile ? "auto" : "100%",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -356,6 +550,7 @@ function App() {
               >
                 <div>{item.emoji}</div>
                 <div
+                  className="nav-label"
                   style={{
                     fontSize: "12px",
                     color: section === item.id ? "#FF6B93" : "#777",
@@ -365,7 +560,7 @@ function App() {
                 >
                   {item.label}
                 </div>
-                {section === item.id && (
+                {section === item.id && !isMobile && (
                   <div
                     style={{
                       position: "absolute",
@@ -379,37 +574,70 @@ function App() {
                     }}
                   />
                 )}
+                {section === item.id && isMobile && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "-6px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: "60%",
+                      height: "3px",
+                      backgroundColor: "#FF6B93",
+                      borderRadius: "3px",
+                    }}
+                  />
+                )}
               </button>
             ))}
           </nav>
 
-          <div
-            style={{
-              marginTop: "auto",
-              marginBottom: "24px",
-              fontSize: "11px",
-              writingMode: "vertical-rl",
-              transform: "rotate(180deg)",
-              color: "#FF6B93",
-              letterSpacing: "1px",
-              padding: "10px 0",
-              fontFamily: "'Comic Neue', cursive",
-              fontWeight: "bold",
-            }}
-          >
-            not a portfolio 💌
-          </div>
+          {!isMobile && (
+            <div
+              className="vertical-text"
+              style={{
+                marginTop: "auto",
+                marginBottom: "24px",
+                fontSize: "11px",
+                writingMode: "vertical-rl",
+                transform: "rotate(180deg)",
+                color: "#FF6B93",
+                letterSpacing: "1px",
+                padding: "10px 0",
+                fontFamily: "'Comic Neue', cursive",
+                fontWeight: "bold",
+              }}
+            >
+              not a portfolio 💌
+            </div>
+          )}
+          
+          {isMobile && (
+            <div
+              style={{
+                fontSize: "12px",
+                color: "#FF6B93",
+                padding: "8px",
+                fontFamily: "'Comic Neue', cursive",
+                fontWeight: "bold",
+              }}
+            >
+              not a portfolio 💌
+            </div>
+          )}
         </div>
 
         {/* main */}
         <div
+          className="main-content"
           style={{
             flex: 1,
             padding: "40px",
             position: "relative",
-            overflow: "auto",
+            overflow: isMobile ? "visible" : "auto",
             display: "flex",
             flexDirection: "column",
+            height: isMobile ? "auto" : "auto",
           }}
         >
           <div style={{ position: "relative", zIndex: 1, flex: 1 }}>
@@ -417,58 +645,63 @@ function App() {
               <>
                 {/* Placeholder for heart */}
                 <div
+                  className="heart-placeholder"
                   style={{
-                    position: "absolute",
-                    top: "20px",
-                    right: "40px",
-                    width: "250px",
-                    height: "250px",
+                    position: isMobile ? "relative" : "absolute",
+                    top: isMobile ? "0" : "20px",
+                    right: isMobile ? "0" : "40px",
+                    width: isMobile ? "150px" : "250px",
+                    height: isMobile ? "150px" : "250px",
                     background: "radial-gradient(circle, #FFC1CC 0%, #E6B8A2 100%)",
                     borderRadius: "50%",
                     opacity: 0.3,
                     filter: "blur(10px)",
                     zIndex: 0,
+                    margin: isMobile ? "20px auto" : "0",
                   }}
                 />
 
                 <h1
+                  className="main-title"
                   style={{
-                    fontSize: "clamp(38px, 5vw, 56px)",
-                    marginBottom: "16px",
+                    fontSize: "clamp(28px, 5vw, 56px)",
+                    marginBottom: "clamp(12px, 2vw, 16px)",
                     color: "#FF6B93",
                     fontFamily: "'Comic Neue', cursive",
                     fontWeight: "700",
+                    textAlign: isMobile ? "center" : "left",
                   }}
                 >
                   I'm Harshita! 👋
                 </h1>
 
                 <div
+                  className="main-text"
                   style={{
-                    marginBottom: "28px",
-                    maxWidth: "540px",
+                    marginBottom: "clamp(20px, 4vw, 28px)",
+                    maxWidth: "100%",
                   }}
                 >
                   <p
                     style={{
-                      fontSize: "18px",
+                      fontSize: "clamp(16px, 3vw, 18px)",
                       lineHeight: "1.7",
                       color: "#555",
-                      marginBottom: "12px",
+                      marginBottom: "clamp(8px, 2vw, 12px)",
                       fontFamily: "'Patrick Hand', cursive",
                       display: "flex",
                       alignItems: "flex-start",
                       gap: "8px",
                     }}
                   >
-                    <span style={{ fontSize: "20px" }}>🎀</span>
+                    <span style={{ fontSize: "clamp(18px, 3vw, 20px)" }}>🎀</span>
                     <span>
                       I make <strong style={{ color: "#FF6B93" }}>cute & silly</strong> React projects when I'm bored.
                     </span>
                   </p>
                   <p
                     style={{
-                      fontSize: "18px",
+                      fontSize: "clamp(16px, 3vw, 18px)",
                       lineHeight: "1.7",
                       color: "#555",
                       fontFamily: "'Patrick Hand', cursive",
@@ -477,7 +710,7 @@ function App() {
                       gap: "8px",
                     }}
                   >
-                    <span style={{ fontSize: "20px" }}>🎨</span>
+                    <span style={{ fontSize: "clamp(18px, 3vw, 20px)" }}>🎨</span>
                     <span>
                       I love designing websites — still figuring out how to monetize that part.
                     </span>
@@ -485,25 +718,27 @@ function App() {
                 </div>
 
                 <div
+                  className="fun-fact-box"
                   style={{
                     backgroundColor: "#FFF0EB",
-                    padding: "24px",
+                    padding: "clamp(20px, 4vw, 24px)",
                     borderRadius: "16px",
-                    marginTop: "20px",
-                    maxWidth: "540px",
+                    marginTop: "clamp(16px, 3vw, 20px)",
+                    maxWidth: "100%",
                     border: "2px solid #FFD1DC",
                     position: "relative",
                   }}
                 >
                   <div
+                    className="fun-fact-title"
                     style={{
                       position: "absolute",
                       top: "-12px",
                       left: "20px",
                       backgroundColor: "#FFF7F4",
-                      padding: "4px 12px",
+                      padding: "clamp(3px, 1vw, 4px) clamp(10px, 2vw, 12px)",
                       color: "#FF6B93",
-                      fontSize: "14px",
+                      fontSize: "clamp(12px, 2vw, 14px)",
                       fontWeight: "bold",
                       fontFamily: "'Comic Neue', cursive",
                       borderRadius: "8px",
@@ -514,7 +749,7 @@ function App() {
                   </div>
                   <div
                     style={{
-                      fontSize: "16px",
+                      fontSize: "clamp(14px, 2.5vw, 16px)",
                       lineHeight: "1.6",
                       color: "#666",
                       fontFamily: "'Patrick Hand', cursive",
@@ -528,13 +763,14 @@ function App() {
                     </p>
                     <div
                       style={{
-                        fontSize: "15px",
+                        fontSize: "clamp(13px, 2vw, 15px)",
                         color: "#FF6B93",
                         fontWeight: "bold",
                         fontFamily: "'Comic Neue', cursive",
                         display: "flex",
                         alignItems: "center",
                         gap: "8px",
+                        flexWrap: "wrap",
                       }}
                     >
                       <span>🎯</span>
@@ -548,12 +784,14 @@ function App() {
 
                 {/* Cute stats */}
                 <div
+                  className="stats-container"
                   style={{
                     display: "flex",
-                    gap: "16px",
-                    marginTop: "36px",
+                    gap: "clamp(12px, 3vw, 16px)",
+                    marginTop: "clamp(24px, 4vw, 36px)",
                     flexWrap: "wrap",
-                    maxWidth: "540px",
+                    maxWidth: "100%",
+                    justifyContent: isMobile ? "center" : "flex-start",
                   }}
                 >
                   {[
@@ -563,29 +801,30 @@ function App() {
                   ].map((stat, i) => (
                     <div
                       key={i}
+                      className="stat-box"
                       style={{
                         backgroundColor: "#FFE8E1",
-                        padding: "16px 20px",
+                        padding: "clamp(12px, 3vw, 16px) clamp(16px, 3vw, 20px)",
                         borderRadius: "12px",
                         textAlign: "center",
-                        minWidth: "120px",
+                        minWidth: isMobile ? "120px" : "120px",
                         border: "1px solid #FFD1DC",
-                        flex: 1,
-                        minWidth: "140px",
+                        flex: isMobile ? "0 1 auto" : 1,
+                        maxWidth: isMobile ? "200px" : "none",
                       }}
                     >
-                      <div style={{ fontSize: "28px" }}>{stat.emoji}</div>
+                      <div style={{ fontSize: "clamp(24px, 4vw, 28px)" }}>{stat.emoji}</div>
                       <div style={{ 
-                        fontSize: "28px", 
+                        fontSize: "clamp(24px, 4vw, 28px)", 
                         fontWeight: "bold", 
                         color: "#FF6B93",
-                        margin: "6px 0",
+                        margin: "clamp(4px, 1vw, 6px) 0",
                         fontFamily: "'Comic Neue', cursive",
                       }}>
                         {stat.value}
                       </div>
                       <div style={{ 
-                        fontSize: "12px", 
+                        fontSize: "clamp(11px, 2vw, 12px)", 
                         color: "#777",
                         fontFamily: "'Patrick Hand', cursive",
                       }}>
@@ -600,39 +839,43 @@ function App() {
             {section === "apps" && (
               <div>
                 <h1 style={{ 
-                  fontSize: "42px", 
+                  fontSize: "clamp(32px, 5vw, 42px)", 
                   color: "#FF6B93", 
                   marginBottom: "24px",
                   fontFamily: "'Comic Neue', cursive",
+                  textAlign: isMobile ? "center" : "left",
                 }}>
                   silly little apps 🦄
                 </h1>
                 <p style={{ 
                   color: "#666",
                   fontFamily: "'Patrick Hand', cursive",
-                  fontSize: "18px",
+                  fontSize: "clamp(16px, 3vw, 18px)",
+                  textAlign: isMobile ? "center" : "left",
                 }}>Coming soon with extra sparkles! ✨</p>
               </div>
             )}
 
             {section === "about" && (
-              <About mode={aboutMode} toggleMode={toggleAboutMode} />
+              <About mode={aboutMode} toggleMode={toggleAboutMode} isMobile={isMobile} />
             )}
 
             {section === "weird" && (
               <div>
                 <h1 style={{ 
-                  fontSize: "42px", 
+                  fontSize: "clamp(32px, 5vw, 42px)", 
                   color: "#FF6B93", 
                   marginBottom: "24px",
                   fontFamily: "'Comic Neue', cursive",
+                  textAlign: isMobile ? "center" : "left",
                 }}>
                   weird stuff ✨
                 </h1>
                 <p style={{ 
                   color: "#666",
                   fontFamily: "'Patrick Hand', cursive",
-                  fontSize: "18px",
+                  fontSize: "clamp(16px, 3vw, 18px)",
+                  textAlign: isMobile ? "center" : "left",
                 }}>The weirdest things are loading... ⚡</p>
               </div>
             )}
@@ -644,7 +887,7 @@ function App() {
               marginTop: "auto",
               paddingTop: "20px",
               borderTop: "2px dotted #FFD1DC",
-              fontSize: "12px",
+              fontSize: "clamp(11px, 2vw, 12px)",
               color: "#999",
               textAlign: "center",
               fontFamily: "'Comic Neue', cursive",
