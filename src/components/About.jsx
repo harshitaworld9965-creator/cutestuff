@@ -30,7 +30,7 @@ const About = ({ mode, toggleMode, isMobile = false }) => {
       borderColor: "#90CAF9",
       serious: {
         question: "What's your engineering background?",
-        answer: "I completed a degree in Computer Science Engineering, focusing on software development and system architecture. It gave me a strong foundation in logical thinking and problem-solving."
+        answer: "I completed a degree in Mathematics and Computing Engineering, focusing on software development, machine learning and system architecture. It gave me a strong foundation in logical thinking and problem-solving."
       },
       silly: {
         question: "So you can fix printers, right?",
@@ -49,7 +49,7 @@ const About = ({ mode, toggleMode, isMobile = false }) => {
       },
       silly: {
         question: "Lawyer by day, coder by night?",
-        answer: "More like 'argues with CSS by day, writes legal docs by night' while drinking excessive amounts of tea! ☕⚖️💻"
+        answer: "More like 'argues with CSS by day, writes legal docs by night' while drinking excessive amounts of coffee! ☕⚖️💻"
       }
     },
     {
