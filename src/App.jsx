@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import About from "./components/About"
 import bgImage from "./assets/bg.jpg"
 
 // Compliment Machine Component - Updated with no title and subtle animation
@@ -226,6 +227,11 @@ function ComplimentMachine() {
 function App() {
   const [section, setSection] = useState("home")
   const [hovered, setHovered] = useState(null)
+  const [aboutMode, setAboutMode] = useState("silly")
+
+  const toggleAboutMode = () => {
+    setAboutMode(aboutMode === "serious" ? "silly" : "serious")
+  }
 
   const navItems = [
     { id: "home", label: "home", emoji: "🏠" },
@@ -608,23 +614,11 @@ function App() {
                 }}>Coming soon with extra sparkles! ✨</p>
               </div>
             )}
+
             {section === "about" && (
-              <div>
-                <h1 style={{ 
-                  fontSize: "42px", 
-                  color: "#FF6B93", 
-                  marginBottom: "24px",
-                  fontFamily: "'Comic Neue', cursive",
-                }}>
-                  about me 👾
-                </h1>
-                <p style={{ 
-                  color: "#666",
-                  fontFamily: "'Patrick Hand', cursive",
-                  fontSize: "18px",
-                }}>Working on something cute here too! 🎀</p>
-              </div>
+              <About mode={aboutMode} toggleMode={toggleAboutMode} />
             )}
+
             {section === "weird" && (
               <div>
                 <h1 style={{ 
